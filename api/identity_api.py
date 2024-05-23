@@ -1,6 +1,7 @@
 from flask import request, jsonify, render_template
 from flask_cors import cross_origin
 from api import app
+from service import identity_service
 
 
 @app.route('/identity', methods=['GET', 'POST'])
