@@ -1,11 +1,13 @@
+import os
+
 from flask import Flask
 from flask_restful import Resource, Api
 from flask_cors import CORS
 
-
-app = Flask(__name__)
+template_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'template'))
+app = Flask(__name__, template_folder=template_dir)
 api = Api(app)
-cors = CORS(app)
+CORS(app)
 
 
 # Mapping HomePage resource to homepage '/'
