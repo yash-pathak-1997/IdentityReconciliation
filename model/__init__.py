@@ -1,0 +1,3 @@
+from model.IdentityRequestModel import IdentityRequestModel
+from model.ContactModel import ContactModel
+from model.IdentityResponseModel import IdentityResponseModel

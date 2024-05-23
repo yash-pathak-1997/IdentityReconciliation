@@ -1,6 +1,7 @@
 from flask import request, jsonify, render_template
 from flask_cors import cross_origin
 from api import app
+from model import IdentityRequestModel
 from service import identity_service
 
 
@@ -9,15 +10,8 @@ from service import identity_service
 def identity_api():
     if request.method == 'POST':
         data = request.get_json()
-        email = data.get('email')
-        phone_number = data.get('phoneNumber')
-
-        response = {
-            'message': 'Data received successfully',
-            'email': email,
-            'phoneNumber': phone_number
-        }
-
+        identity_request = IdentityRequestModel(email=data['email'], phoneNumber=data['phoneNumber'])
+        response = identity_service(identity_request)
         return jsonify(response)
 
     else:
