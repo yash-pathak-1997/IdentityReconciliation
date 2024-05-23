@@ -12,6 +12,6 @@ class Contact(db.Model):
     email = db.Column(db.String)
     linkedId = db.Column(db.Integer)
     linkPrecedence = db.Column(db.String)
-    createdAt = db.Column(db.DateTime, default=datetime.utcnow)
-    updatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    createdAt = db.Column(db.DateTime, default=datetime.now())
+    updatedAt = db.Column(db.DateTime, default=datetime.now(), onupdate=datetime.now())
     deletedAt = db.Column(db.DateTime)
