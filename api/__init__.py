@@ -5,9 +5,12 @@ from flask_restful import Resource, Api
 from flask_cors import CORS
 
 template_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'template'))
+
 app = Flask(__name__, template_folder=template_dir)
 api = Api(app)
 CORS(app)
+
+db_string = os.getenv('DB_CONN_STRING')
 
 
 # Mapping HomePage resource to homepage '/'
