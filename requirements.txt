@@ -5,3 +5,4 @@ Flask-Login==0.6.2
 Flask-RESTful==0.3.10
 Flask-SQLAlchemy==3.0.2
 SQLAlchemy==1.4.43
+Werkzeug==2.3.7
