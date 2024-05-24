@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from sqlalchemy import or_
 from entity import Contact
@@ -43,7 +44,7 @@ def identity_dao(identity_request: IdentityRequestModel):
             larger_contact = min_email_contact
 
         # change the larger ID's linkPrecedence to secondary
-        larger_contact.linkPrecedence = 'secondary'
+        larger_contact.linkPrecedence = os.getenv('SECONDARY')
         # add smaller ID in its linkedId
         larger_contact.linkedId = smaller_id
         db.session.commit()
@@ -61,10 +62,10 @@ def add_as_primary(identity_request: IdentityRequestModel):
 def add_as_secondary(identity_request: IdentityRequestModel):
     primary_contact = Contact.query.filter(or_(Contact.email == identity_request.email,
                                                Contact.phoneNumber == identity_request.phoneNumber)).order_by(Contact.id).first()
-    insert_contact(identity_request.phoneNumber, identity_request.email, primary_contact.id, 'secondary')
+    insert_contact(identity_request.phoneNumber, identity_request.email, primary_contact.id, os.getenv('SECONDARY'))
 
 
-def insert_contact(phoneNumber, email, linkedId=None, linkPrecedence='primary'):
+def insert_contact(phoneNumber, email, linkedId=None, linkPrecedence=os.getenv('PRIMARY')):
     # Create a new Contact instance
     new_contact = Contact(
         phoneNumber=phoneNumber,

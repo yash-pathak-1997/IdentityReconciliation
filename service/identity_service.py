@@ -1,4 +1,6 @@
 import json
+import os
+
 from dao import identity_dao
 from model import IdentityRequestModel, IdentityResponseModel
 
@@ -15,7 +17,7 @@ def identity_service(identity_request: IdentityRequestModel):
     primary_contact_id = ""
 
     for contact in contacts:
-        if contact.linkPrecedence == "primary":
+        if contact.linkPrecedence == os.getenv('PRIMARY'):
             primary_contact_id = contact.id
 
     for contact in contacts:
