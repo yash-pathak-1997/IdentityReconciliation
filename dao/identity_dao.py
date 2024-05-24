@@ -4,6 +4,7 @@ from sqlalchemy import or_
 from entity import Contact
 from model import IdentityRequestModel
 from api import db
+from collections import deque
 
 
 def identity_dao(identity_request: IdentityRequestModel):
@@ -43,11 +44,18 @@ def identity_dao(identity_request: IdentityRequestModel):
             larger_contact.linkPrecedence = os.getenv('SECONDARY')
             # add smaller ID in its linkedId
             larger_contact.linkedId = smaller_id
+
+            update_contacts = Contact.query.filter(Contact.linkedId == larger_contact.id).all()
+            for update_contact in update_contacts:
+                update_contact.linkedId = smaller_id
+
             db.session.commit()
 
-    # Query the Contact entity for objects with the same email or phoneNumber
-    contacts = Contact.query.filter(or_(Contact.email == identity_request.email,
-                                        Contact.phoneNumber == identity_request.phoneNumber)).all()
+    # Query the Contact entity for objects
+    contacts = bfs_contact_search(identity_request)
+    if not contacts:
+        add_as_primary(identity_request)
+        contacts = bfs_contact_search(identity_request)
 
     return contacts
 
@@ -78,3 +86,21 @@ def insert_contact(phoneNumber, email, linkedId=None, linkPrecedence=os.getenv('
 
     # Commit the session to save the new contact to the database
     db.session.commit()
+
+
+def bfs_contact_search(identity_request: IdentityRequestModel):
+    queue = deque([(identity_request.email, identity_request.phoneNumber)])
+    visited = set()
+    all_related_contacts = []
+
+    while queue:
+        current_email, current_phone_number = queue.popleft()
+        contacts = Contact.query.filter(or_(Contact.email == current_email, Contact.phoneNumber == current_phone_number)).all()
+
+        for contact in contacts:
+            if contact.id not in visited:
+                visited.add(contact.id)
+                all_related_contacts.append(contact)
+                queue.append((contact.email, contact.phoneNumber))
+
+    return all_related_contacts

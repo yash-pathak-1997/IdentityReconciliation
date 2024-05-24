@@ -20,8 +20,12 @@ def identity_service(identity_request: IdentityRequestModel):
             primary_contact_id = contact.id
 
     for contact in contacts:
-        emails.append(contact.email)
-        phone_numbers.append(contact.phoneNumber)
+        if contact.email:
+            emails.append(contact.email)
+
+        if contact.phoneNumber:
+            phone_numbers.append(contact.phoneNumber)
+
         if contact.id != primary_contact_id:
             secondary_contact_ids.append(contact.id)
 
