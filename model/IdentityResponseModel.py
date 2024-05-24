@@ -5,3 +5,13 @@ class IdentityResponseModel:
         self.emails = emails
         self.phoneNumbers = phoneNumbers
         self.secondaryContactIds = secondaryContactIds
+
+    def to_dict(self):
+        return {
+            "contact": {
+                'primaryContactId': self.primaryContactId,
+                'emails': self.emails,
+                'phoneNumbers': self.phoneNumbers,
+                'secondaryContactIds': self.secondaryContactIds
+            }
+        }

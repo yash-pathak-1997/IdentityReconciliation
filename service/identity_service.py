@@ -1,5 +1,6 @@
+import json
 from dao import identity_dao
-from model import IdentityRequestModel
+from model import IdentityRequestModel, IdentityResponseModel
 
 
 def identity_service(identity_request: IdentityRequestModel):
@@ -12,6 +13,7 @@ def identity_service(identity_request: IdentityRequestModel):
     phone_numbers = []
     secondary_contact_ids = []
     primary_contact_id = ""
+
     for contact in contacts:
         if contact.linkPrecedence == "primary":
             primary_contact_id = contact.id
@@ -23,13 +25,13 @@ def identity_service(identity_request: IdentityRequestModel):
             secondary_contact_ids.append(contact.id)
 
     # Create the response
-    response = {
-        'contact': {
-            'primaryContactId': primary_contact_id,
-            'emails': emails,
-            'phoneNumbers': list(set(phone_numbers)),
-            'secondaryContactIds': secondary_contact_ids
-        }
-    }
+    response_model = IdentityResponseModel(
+        primaryContactId=primary_contact_id,
+        emails=list(set(emails)),
+        phoneNumbers=list(set(phone_numbers)),
+        secondaryContactIds=secondary_contact_ids
+    )
 
+    # Convert the response model to a dictionary and then to JSON
+    response = response_model.to_dict()
     return response
