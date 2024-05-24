@@ -1,2 +1,5 @@
 flask~=2.2.2
-sqlalchemy
+dotenv
+flask_sqlalchemy
+flask_cors
+flask_restful

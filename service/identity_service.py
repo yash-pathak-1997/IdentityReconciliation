@@ -5,42 +5,29 @@ from model import IdentityRequestModel, IdentityResponseModel
 
 def identity_service(identity_request: IdentityRequestModel):
     """
-    Service layer of /identity API
+    Service layer of /identity endpoint
 
     :param identity_request: IdentityRequestModel
     :return: response: dict()
     """
 
-    # DAO Call
+    # DAO Layer Call
     contacts = identity_dao(identity_request)
 
-    # Business Logic - Extract emails, phone numbers, and secondary contact IDs
-    emails = []
-    phone_numbers = []
-    secondary_contact_ids = []
-    primary_contact_id = ""
+    # Business Logic
+    response_model = IdentityResponseModel()
 
     for contact in contacts:
         if contact.linkPrecedence == os.getenv('PRIMARY'):
-            primary_contact_id = contact.id
+            response_model.primaryContactId = int(contact.id)
 
     for contact in contacts:
         if contact.email:
-            emails.append(contact.email)
-
+            response_model.emails.append(contact.email)
         if contact.phoneNumber:
-            phone_numbers.append(contact.phoneNumber)
-
-        if contact.id != primary_contact_id:
-            secondary_contact_ids.append(contact.id)
-
-    # Create the response
-    response_model = IdentityResponseModel(
-        primaryContactId=primary_contact_id,
-        emails=list(set(emails)),
-        phoneNumbers=list(set(phone_numbers)),
-        secondaryContactIds=secondary_contact_ids
-    )
+            response_model.phoneNumbers.append(contact.phoneNumber)
+        if int(contact.id) != response_model.primaryContactId:
+            response_model.secondaryContactIds.append(int(contact.id))
 
     # Convert the response model to a dictionary and then to JSON
     response = response_model.to_dict()

@@ -9,7 +9,7 @@ from collections import deque
 
 def identity_dao(identity_request: IdentityRequestModel):
     """
-        Data Access Layer of /identity API
+        Data Access Layer of /identity endpoint
 
         :param identity_request: IdentityRequestModel
         :return: contacts: Contact[]
@@ -125,7 +125,7 @@ def primary_to_secondary(identity_request: IdentityRequestModel):
 
 def bfs_contact_search(identity_request: IdentityRequestModel):
     """
-        Perform a BFS to find all contacts with the same email or phone number,
+        Function to perform a BFS to find all contacts with the same email or phone number,
         and return all connected contacts.
 
         :param identity_request: IdentityRequestModel
