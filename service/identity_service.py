@@ -1,10 +1,15 @@
-import json
 import os
 from dao import identity_dao
 from model import IdentityRequestModel, IdentityResponseModel
 
 
 def identity_service(identity_request: IdentityRequestModel):
+    """
+    Service layer of /identity API
+
+    :param identity_request: IdentityRequestModel
+    :return: response: dict()
+    """
 
     # DAO Call
     contacts = identity_dao(identity_request)
