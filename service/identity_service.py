@@ -1,6 +1,5 @@
 import json
 import os
-
 from dao import identity_dao
 from model import IdentityRequestModel, IdentityResponseModel
 
