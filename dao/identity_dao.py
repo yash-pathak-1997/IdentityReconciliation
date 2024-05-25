@@ -34,6 +34,16 @@ def identity_dao(identity_request: IdentityRequestModel):
         add_as_primary(identity_request)
         contacts = bfs_contact_search(identity_request)
 
+    # Fetch all contacts with same linkedId
+    primary_contact = None
+    for contact in contacts:
+        if contact.linkPrecedence == os.getenv('PRIMARY'):
+            primary_contact = contact
+            break
+
+    all_contacts = Contact.query.filter(Contact.linkedId == primary_contact.id).order_by(Contact.id).all()
+    contacts.extend(all_contacts)
+
     return contacts
 
 

@@ -56,6 +56,8 @@ Created a `.env` file in the root directory and include the following variables:
 - **Response:** JSON with the processed contact information.
 
 ## Business Logic
+Implemented a three layer approach (maybe over-engineered a little) to keep API, Business and Data Access seperate.
+
 ### BFS Contact Search
 The solution implements a BFS algorithm to search for records with matching emails or phone numbers and return all related records.
 
