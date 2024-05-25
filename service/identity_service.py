@@ -29,6 +29,10 @@ def identity_service(identity_request: IdentityRequestModel):
         if int(contact.id) != response_model.primaryContactId:
             response_model.secondaryContactIds.append(int(contact.id))
 
+    response_model.emails = list(set(response_model.emails))
+    response_model.phoneNumbers = list(set(response_model.phoneNumbers))
+    response_model.secondaryContactIds = list(set(response_model.secondaryContactIds))
+
     # Convert the response model to a dictionary and then to JSON
     response = response_model.to_dict()
     return response

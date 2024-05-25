@@ -1,1 +1,7 @@
 .idea
+venv
+*/misc.xml
+*/inspectionProfiles
+*/modules.xml
+*/workspace.xml
+*/vcs.xml
